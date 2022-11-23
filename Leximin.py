@@ -2,7 +2,7 @@ from itertools import chain
 import gurobipy as grb
 import numpy as np
 
-#heuristic leximin
+# heuristic leximin
 def heuristic_leximin(panel_items):
     instance = set(list(chain.from_iterable([list(itm) for itm in panel_items])))
     itemCountDic = {}
@@ -57,6 +57,7 @@ def heuristic_leximin(panel_items):
 
     return nonzero_prob, item_probs
 
+# optimal leximin implemendated in Gurobi
 
 def leximin(panel_items):
 
@@ -119,7 +120,7 @@ def leximin(panel_items):
     return nonzero_prob, item_probs
 
 
-###########greedy leximin
+# Greedy leximin implemendation
 
 def set_cover(universe, subsets):
     """Find a family of subsets that covers the universal set"""
