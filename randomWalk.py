@@ -4,6 +4,8 @@ import pickle
 import numpy as np
 
 
+# Function for calculating exact MMR value given a set of set.
+
 def exactMMR(s):
     s = sorted(s)
     s = tuple(s)
@@ -25,6 +27,7 @@ def exactMMR(s):
     return MMR_score
 
 
+# Function to check  if randomWalk and NRA result match
 
 def checkExist(resultSet,randTopK):
     for r in resultSet:
@@ -32,6 +35,7 @@ def checkExist(resultSet,randTopK):
             return True
     return False
 
+# Ranndom walk algorithm implementation
 
 def randomWalk(theta,sorted_rel,sorted_pairdiv,k,coeff):
     resultSet = []
@@ -82,6 +86,7 @@ def randomWalk(theta,sorted_rel,sorted_pairdiv,k,coeff):
     print("max mmr ",maxmmr)
     return resultSet
 
+# Function to calculate recall 
 
 def calculateRecall(exactTopK,randomTopK):
     exactTopKSorted = []
@@ -101,6 +106,10 @@ def calculateRecall(exactTopK,randomTopK):
     return recall
 
 
+
+# Test run
+# change name of the input data to test different dataset
+# change n, k, coef, delta to test different settings
 
 
 datasetName = "airbnb"
