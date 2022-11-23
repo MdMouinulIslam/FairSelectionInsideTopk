@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 
 
+# Function to calculate exact MMR value given a set of set
 
 def exactMMR(s):
     s = sorted(s)
@@ -26,6 +27,7 @@ def exactMMR(s):
 
 
 
+# Function to check if adaptiveRandomWalk and NRA result match
 
 def checkExist(resultSet, randTopK):
     for r in resultSet:
@@ -45,6 +47,7 @@ def checkItemCount(itemCount,d):
 
 
 
+# Adaptive random walk algorithm implementation
 
 def adaptiveRandomWalk(theta, sorted_rel, sorted_pairdiv, k, coeff):
     resultSet = []
@@ -112,6 +115,7 @@ def adaptiveRandomWalk(theta, sorted_rel, sorted_pairdiv, k, coeff):
     return resultSet
 
 
+# Function to calculate recall  
 
 def calculateRecall(exactTopK, randomTopK):
     exactTopKSorted = []
@@ -132,6 +136,10 @@ def calculateRecall(exactTopK, randomTopK):
     recall = match / len(exactTopK)
     return recall
 
+
+# Test run
+# change dataset name to test different dataset
+# change n, k, coef, delta to test different settings
 
 
 datasetNameList = ['airbnb']
