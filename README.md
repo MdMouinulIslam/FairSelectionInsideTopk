@@ -10,3 +10,4 @@ sortedlists.py: Generate Sorted Relevance and Diversity lists from different rea
 
 sortedlistsSyn.py: Sorted Relevance and Diversity lists from different real and synthetic datasets, including a random sampling data
 
+Goto mot file, run main.py
