@@ -44,11 +44,24 @@ def getItemProbExp3(dataDict,movieId,eligibleTopk,noUsers,groupIds):
         item_probs[mid] = 0
 
     proportion = getProportions(groupIds,movieId)
+    print("ratio in the population = ",proportion)
+
+    topkProportion = {}
+    allGroups = set(groupIds.values())
+    for g in allGroups:
+        topkProportion[g] = 0
+
     for topk in eligibleTopk:
         if isFairnessSatisfied(groupIds, proportion, topk) == False:
             continue
         for mid in topk:
             item_probs[mid] =  item_probs[mid] + 1
+
+
+        for i in topk:
+            topkProportion[groupIds[i]] = topkProportion[groupIds[i]] + 1
+
+    print("result ratio in top-k = ",topkProportion[0]/topkProportion[1])
 
     total = sum(item_probs.values())
     for key,val in item_probs.items():
