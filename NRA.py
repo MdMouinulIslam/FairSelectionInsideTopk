@@ -6,7 +6,8 @@ import timeit
 from itertools import chain
 from sklearn.datasets import make_blobs
 from scipy.spatial import distance
-from math import comb
+#from math import comb
+from scipy.special import comb
 import pandas as pd
 from sklearn.preprocessing import normalize
 import heapq as hq
@@ -14,16 +15,16 @@ import pickle
 from sklearn.preprocessing import MinMaxScaler
 import math
 
-
-K = 5
+'''
+K = 3
 print("k = ", K)
 
-coef = 0.99
+coef = 0.5
 print("lambda coefficient =", coef)
 
 sorted_rel = {}
 
-'''
+
 instance = ["i1","i2","i3","i4","i5"]
 sorted_rel["i1"] = 8.6
 sorted_rel["i2"] = 8.5
@@ -46,9 +47,12 @@ pairwise_diversity[("i2","i5")] = 1
 pairwise_diversity[("i1","i5")] = 1
 
 sorted_pairdiv = pairwise_diversity
-
+numberofSample = 5
+total_sets = comb(numberofSample, K)
 '''
-numberofSample = 10000
+K = 5
+coef = 0.05
+numberofSample = 1000
 print("dataset size:", numberofSample)
 
 
@@ -58,11 +62,11 @@ total_sets = comb(numberofSample, K)
 
 
 
-with open('sortedRel1k-yelp.pickle', 'rb') as f:
+with open(r'data\sortedRel1k-imdb.pickle', 'rb') as f:
     sorted_rel = pickle.load(f)
 f.close()
 
-with open("sortedDiv1k-yelp.pickle", 'rb') as f:
+with open(r'data\sortedDiv1k-imdb.pickle', 'rb') as f:
     sorted_pairdiv  = pickle.load(f)
 f.close()
 
@@ -70,6 +74,7 @@ f.close()
 #print(sorted_pairdiv)
 print(len(sorted_rel))
 
+#'''
 
 #print("sorted rel list", sorted_rel.values())
 #print("sorted diversity list", sorted_pairdiv.values())
@@ -84,8 +89,6 @@ min_rel = list(sorted_rel.values())[len(sorted_rel) - 1]
 
 def leximin(panel_items):
     print("number of panel items:", len(panel_items))
-    if len(panel_items) == 12:
-        print("deb")
     m = grb.Model()
     # Variables for the output probabilities of the different panels
     lambda_p = [m.addVar(vtype=grb.GRB.CONTINUOUS, lb=0.) for _ in panel_items]
@@ -612,9 +615,12 @@ start = timeit.default_timer()
 
 highestMMR = exactMMR(topkSets[1])
 
+
+
+
 print("exact mmr:", highestMMR)
 
-delta = 0.05* highestMMR
+delta = 0.001* highestMMR
 
 #delta = 289.18
 
@@ -678,15 +684,23 @@ file_to_write2 = open("airbnb-1k-topksets-delta0-02.pickle", "wb")
 pickle.dump(finalres, file_to_write2)
 
 
+allitems = ['i1', 'i2', 'i3', 'i4', 'i5']
+allset = []
+for s in combinations(allitems, K):
+    mmr = exactMMR(s)
+    print("debug exact mmr: ", s, " = ", mmr)
+    if mmr >= theta:
+        allset.append(s)
 
-# set_prob, item_prob = leximin(list(topkSets.values()))
-# set_prob, item_prob = set_cover(instance,list(topkSets.values()))
-# set_prob, item_prob = heuristic_leximin(list(topkSets.values()))
+#allset = [('i1','i2','i3'),('i2','i3','i4'),('i2','i3','i5'),('i3','i4','i5')]
+set_prob, item_prob = leximin(allset)
+set_prob1, item_prob1 = set_cover(instance,list(topkSets.values()))
+set_prob2, item_prob2 = heuristic_leximin(list(topkSets.values()))
 
 stop = timeit.default_timer()
 lex_time = stop - start
-# print('Time for leximin: ', lex_time)
-# print(set_prob, item_prob)
+print('Time for leximin: ', lex_time)
+print(set_prob, item_prob)
 print("init_j", init_j)
 
 myset = set(seen_items)

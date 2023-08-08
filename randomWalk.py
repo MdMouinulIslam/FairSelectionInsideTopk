@@ -112,15 +112,17 @@ def calculateRecall(exactTopK,randomTopK):
 # change n, k, coef, delta to test different settings
 
 
-datasetName = "airbnb"
-n = 10000
+datasetName = "imdb"
+n = 1000
 k = 5
-coef = 0.99
-delta = 0.01
-highestMMRSet = {"airbnb":368.6739215084142,"yelp":31363.200569260214,"imdb":439.7612455326149,"synthetic":4902.341114004959}
-relFileName = r'data/sortedRel10k-'+ datasetName + ".pickle"
-divFileName = r"data/sortedDiv10k-"+ datasetName + ".pickle"
-exactTopkFileName = r'data/'+ datasetName + "10k-topksets-delta0-015.pickle"
+coef = 0.5
+delta = 0.5
+#highestMMRSet = {"airbnb":368.6739215084142,"yelp":31363.200569260214,"imdb":439.7612455326149,"synthetic":4902.341114004959}
+highestMMRSet = {"airbnb":368.6739215084142,"yelp":31363.200569260214,"imdb":66.42436682779767,"synthetic":4902.341114004959}
+
+relFileName = r'data/sortedRel1k-'+ datasetName + ".pickle"
+divFileName = r"data/sortedDiv1k-"+ datasetName + ".pickle"
+exactTopkFileName = r'data/'+ datasetName + "1k-topksets-delta0-015.pickle"
 
 
 highestMMR = highestMMRSet[datasetName]
@@ -134,9 +136,9 @@ with open(divFileName, 'rb') as f:
 f.close()
 
 
-with open(exactTopkFileName, 'rb') as f:
-    exactTopk  = pickle.load(f)
-f.close()
+# with open(exactTopkFileName, 'rb') as f:
+#     exactTopk  = pickle.load(f)
+# f.close()
 
 
 
@@ -158,12 +160,13 @@ with open(fileName, 'wb') as handle:
     pickle.dump(resultSetRandomWalk, handle, protocol=pickle.HIGHEST_PROTOCOL)
     print("file saved in : ",fileName)
 
-fileName = "Random_top-k_"+datasetName + "_n=" + str(n)+"_k="+str(k)+"_delta="+str(delta)+".pickle"
-with open(fileName, 'rb') as f:
-    resultSetRandomWalk = pickle.load(f)
-recall = calculateRecall(exactTopk,resultSetRandomWalk)
-print("recall = ",recall)
-print("exact topk ",exactTopk)
+# fileName = "Random_top-k_"+datasetName + "_n=" + str(n)+"_k="+str(k)+"_delta="+str(delta)+".pickle"
+# with open(fileName, 'rb') as f:
+#     resultSetRandomWalk = pickle.load(f)
+# recall = calculateRecall(exactTopk,resultSetRandomWalk)
+# print("recall = ",recall)
+# print("exact topk ",exactTopk)
+print(resultSetRandomWalk)
 print("run time = ",end-start)
 
 
